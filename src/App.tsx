@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Papa from 'papaparse'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import NameList from './components/NameList';
 import DetailsCard from './components/DetailsCard';
@@ -10,8 +11,6 @@ function App() {
   const [selected, setSelected] = useState<personal | null>(null)
   const [search, setSearch] = useState('')
 
-    const listRef = useRef<HTMLDivElement | null>(null)
-  const cardRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     fetch('/Personal_React/data.csv')
@@ -43,21 +42,9 @@ function App() {
     p.fullName.toLowerCase().includes(search.toLowerCase())
   )
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node
-      if (
-        selected &&
-        !listRef.current?.contains(target) &&
-        !cardRef.current?.contains(target)
-      ) {
-        setSelected(null)
-      }
-    }
+  const handleClose = () => setSelected(null)
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [selected])
+  
 
   return (
     <div className="container mt-4">
@@ -71,22 +58,41 @@ function App() {
         onChange={e => setSearch(e.target.value)}
       />
 
-     {!selected ? (
-      <div className="d-flex justify-content-center">
+     <div className="d-flex justify-content-center">
         <div className="col-md-12">
           <NameList people={filtered} onSelect={setSelected} isCentered={true} />
         </div>
       </div>
-    ) : (
-      <div className="row">
-        <div className="col-md-6">
-          <NameList people={filtered} onSelect={setSelected} isCentered={false} />
+
+      {/* Modal para el detalle */}
+      {selected && (
+        <div
+          className="modal fade show"
+          tabIndex={-1}
+          style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
+          onClick={handleClose}  // clic afuera cierra modal
+        >
+          <div
+            className="modal-dialog modal-dialog-centered"
+            onClick={e => e.stopPropagation()} // evitar cerrar modal si clic dentro
+          >
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Detalles de {selected.fullName}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  aria-label="Close"
+                  onClick={handleClose}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <DetailsCard person={selected} />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="col-md-6">
-          <DetailsCard person={selected} />
-        </div>
-      </div>
-    )}
+      )}
   </div>
   )
 }
