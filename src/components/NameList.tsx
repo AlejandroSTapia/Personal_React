@@ -1,4 +1,6 @@
-import type { personal } from "../types/personal";
+import type { personal } from "../types/personal"
+
+
 
 interface Props {
   people: personal[]

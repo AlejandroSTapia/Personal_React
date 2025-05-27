@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Papa from 'papaparse'
-import './App.css'
-import type { personal } from "./types/personal";
+import './App.css';
 import NameList from './components/NameList';
 import DetailsCard from './components/DetailsCard';
+import type { personal } from './types/personal';
 
 function App() {
  const [people, setPeople] = useState<personal[]>([])
