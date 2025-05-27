@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Papa from 'papaparse'
 import './App.css';
 import NameList from './components/NameList';
@@ -9,6 +9,9 @@ function App() {
  const [people, setPeople] = useState<personal[]>([])
   const [selected, setSelected] = useState<personal | null>(null)
   const [search, setSearch] = useState('')
+
+    const listRef = useRef<HTMLDivElement | null>(null)
+  const cardRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     fetch('/Personal_React/data.csv')
@@ -39,6 +42,22 @@ function App() {
   const filtered = people.filter(p =>
     p.fullName.toLowerCase().includes(search.toLowerCase())
   )
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node
+      if (
+        selected &&
+        !listRef.current?.contains(target) &&
+        !cardRef.current?.contains(target)
+      ) {
+        setSelected(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [selected])
 
   return (
     <div className="container mt-4">
