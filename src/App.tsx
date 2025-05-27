@@ -11,7 +11,7 @@ function App() {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    fetch('/data.csv')
+    fetch('/Personal_React/data.csv')
       .then(res => res.text())
       .then(text => {
         Papa.parse(text, {
