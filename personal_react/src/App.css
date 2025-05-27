@@ -34,8 +34,15 @@
 }
 
 .card {
-  padding: 2em;
+  transition: transform 0.2s ease;
 }
+.card:hover {
+  transform: scale(1.01);
+}
+.list-group-item {
+  cursor: pointer;
+}
+
 
 .read-the-docs {
   color: #888;

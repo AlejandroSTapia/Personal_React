@@ -52,13 +52,23 @@ function App() {
         onChange={e => setSearch(e.target.value)}
       />
 
-      <div className="row">
-        <NameList people={filtered} onSelect={setSelected} />
-        <div className="col-md-6">
-          {selected && <DetailsCard person={selected} />}
+     {!selected ? (
+      <div className="d-flex justify-content-center">
+        <div className="col-md-12">
+          <NameList people={filtered} onSelect={setSelected} isCentered={true} />
         </div>
       </div>
-    </div>
+    ) : (
+      <div className="row">
+        <div className="col-md-6">
+          <NameList people={filtered} onSelect={setSelected} isCentered={false} />
+        </div>
+        <div className="col-md-6">
+          <DetailsCard person={selected} />
+        </div>
+      </div>
+    )}
+  </div>
   )
 }
 
