@@ -1,34 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import Papa from 'papaparse'
 import './App.css'
+import type { personal } from "./types/personal";
+import NameList from './components/NameList';
+import DetailsCard from './components/DetailsCard';
 
 function App() {
-  const [count, setCount] = useState(0)
+ const [people, setPeople] = useState<personal[]>([])
+  const [selected, setSelected] = useState<personal | null>(null)
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    fetch('/data.csv')
+      .then(res => res.text())
+      .then(text => {
+        Papa.parse(text, {
+          header: true,
+          complete: (result) => {
+            const raw = result.data as any[] // OJO: raw es de tipo any[]
+
+            const mapped: personal[] = raw
+              .filter(p => p["Nombre completo"]) // ignorar filas vacías
+              .map((p, index) => ({
+                id: String(index + 1),
+                fullName: p["Nombre completo"],
+                age: p["Edad"],
+                gender: p["Sexo"],
+                occupation: p["Ocupación"],
+                levelOfEducation: p["Nivel de estudios"],
+              }))
+
+            setPeople(mapped.slice(0, 50))
+          },
+        })
+      })
+  }, [])
+
+  const filtered = people.filter(p =>
+    p.fullName.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container mt-4">
+      <h1 className="mb-4">Directorio</h1>
+
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Buscar por nombre..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
+
+      <div className="row">
+        <NameList people={filtered} onSelect={setSelected} />
+        <div className="col-md-6">
+          {selected && <DetailsCard person={selected} />}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

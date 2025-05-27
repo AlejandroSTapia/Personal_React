@@ -1,8 +1,8 @@
-export interface Personal {
+export interface personal {
     id: string;
-    name: string;
+    fullName: string;
     age: number;
-    sex: string;
-    ocupation: string;
-    level_of_education: string;
+    gender: string;
+    occupation: string;
+    levelOfEducation: string;
 }
