@@ -27,10 +27,12 @@ const NameList = ({ people, onSelect, isCentered }: Props) => {
 
         {/* Botón con nombre */}
         <button
-          className="list-group-item list-group-item-action flex-fill text-start fw-semibold mb-0"
+          className="card mb-2 shadow-sm hover-shadow-sm list-group-item-action flex-fill text-start"
           onClick={() => onSelect(p)}
         >
+          <div className="card-body py-2 px-3">
           {p.fullName}
+           </div>
         </button>
       </div>
     ))}
