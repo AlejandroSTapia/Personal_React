@@ -64,9 +64,9 @@ function App() {
         />
       </div>
 
-      <div className="color-card card p-4 shadow-sm hover-shadow-sm">
+      <div className="card-items card p-4 shadow-sm hover-shadow-sm">
         <div className="d-flex justify-content-center">
-          <div className="col-md-12">
+          <div className="col-12 col-md-12 ">
             <NameList
               people={filtered}
               onSelect={setSelected}

@@ -3,6 +3,13 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  overflow-x: hidden; 
+}
+
+@media (max-width: 576px) {
+  #root {
+    padding: 1rem; /* 👈 menos padding en móviles */
+  }
 }
 
 .logo {
@@ -65,15 +72,23 @@
 .card:hover {
   transform: scale(1.01);
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 0.4rem 0.8rem rgba(0,0,0,0.1);
-}
-
-.color-card{
-  /* background-color: #7d82d4; */
+  box-shadow: 0 0.4rem 0.8rem rgba(206, 59, 59, 0.1);
 }
 
 .main-title{
   color: #404041;
 
 }
+
+/* .card-items {
+   overflow-x: auto; 
+}
+
+.card-items .row,
+.card-items .list-group {
+  max-width: 100%;
+  overflow-x: auto;
+} */
+
+
 

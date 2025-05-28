@@ -18,26 +18,27 @@ const NameList = ({ people, onSelect, isCentered }: Props) => {
     {list.map((p, idx) => (
       <div
         key={idx}
-        className="d-flex align-items-center mb-2"
+        className="d-flex align-items-stretch mb-2"
       >
-        {}
-        <div className="text-end text-muted fw-bold me-2" style={{ width: '30px' }}>
+        {/* Número alineado verticalmente */}
+        <div
+          className="text-muted fw-bold me-2 d-flex align-items-center justify-content-end"
+          style={{ width: '30px', flexShrink: 0 }}
+        >
           {indexOffset + idx + 1}.
         </div>
 
-        {/* Botón con nombre */}
+        {/* Botón de nombre */}
         <button
-          className="card mb-2 shadow-sm hover-shadow-sm list-group-item-action flex-fill text-start"
+          className="card shadow-sm hover-shadow-sm rounded-3 w-100 text-start p-2"
           onClick={() => onSelect(p)}
         >
-          <div className="card-body py-2 px-3">
           {p.fullName}
-           </div>
         </button>
       </div>
     ))}
   </div>
-)
+);
 
 
   return (
